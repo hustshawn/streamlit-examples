@@ -1,10 +1,12 @@
 import streamlit as st
+import dotenv
 import boto3
 
 import os
 import random
 import json
 
+dotenv.load_dotenv()
 
 # Reference: https://docs.streamlit.io/knowledge-base/tutorials/build-conversational-apps
 st.title('Chat Bot Demo')

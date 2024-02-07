@@ -60,12 +60,17 @@ for message in st.session_state.messages:
 
 
 def parse_stream(stream):
+    full_response = ""
     for event in stream:
         chunk = event.get('chunk')
         if chunk:
             message = json.loads(chunk.get('bytes').decode())[
                 'completion'] or ""
+            full_response += message
             yield message
+    st.session_state.messages.append(
+        {"role": "Assistant", "content": full_response}
+    )
 
 
 if prompt := st.chat_input("What's up?"):
@@ -92,9 +97,6 @@ if prompt := st.chat_input("What's up?"):
             # st.write_stream is introduced in streamlit v1.31.0
             st.write_stream(parse_stream(stream))
 
-    st.session_state.messages.append(
-        {"role": "Assistant", "content": full_response}
-    )
 
 if DEBUG := os.getenv("DEBUG", False):
     st.subheader("History", divider="rainbow")

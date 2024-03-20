@@ -5,7 +5,7 @@ import dotenv
 
 dotenv.load_dotenv()
 
-st.title("Amazon Bedrock Claud3 Response Streaming Demo")
+st.title("Amazon Bedrock Claude3 Response Streaming Demo")
 
 
 client = boto3.client("bedrock-runtime")
@@ -21,7 +21,7 @@ def parse_stream(stream):
             message = json.loads(chunk.get("bytes").decode())
             if message['type'] == "content_block_delta":
                 yield message['delta']['text'] or ""
-            if message['type'] == "message_stop":
+            elif message['type'] == "message_stop":
                 return "\n"
 
 
